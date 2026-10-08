@@ -1,1 +1,5 @@
-export default function Home(){return <main><section><small>CELEBRA PREMIUM</small><h1>Planeje.<br/>Encante.<br/>Celebre.</h1><p>Nova plataforma de gestão de eventos, construída do zero.</p></section><aside><b>ETAPA 1 · FOUNDATION</b><h2>Base inicial estruturada</h2><p>Arquitetura multiempresa, Supabase, RLS e canais de comunicação versionados.</p></aside></main>}
+import { redirect } from "next/navigation";
+
+export default function Home() {
+  redirect("/login");
+}
