@@ -5,6 +5,7 @@ import {readSheet} from "read-\u0065xcel-file/browser";
 type Family={id:string;name:string;primary_contact_name:string|null;primary_contact_email:string|null;primary_contact_phone:string|null;max_invitees:number|null;notes:string|null;active:boolean};
 type Guest={id:string;family_id:string;full_name:string;category:string;is_family_responsible:boolean;companions_allowed:boolean;max_companions:number;notes:string|null;active:boolean;guest_private_details:{email:string|null;phone:string|null;special_needs:string|null}|null};
 const clean=(v:unknown)=>String(v??"").trim();
+const key=(v:string)=>v.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
 export default function GuestManager({eventId,initialFamilies,initialGuests}:{eventId:string;initialFamilies:Family[];initialGuests:Guest[]}){
  const sb=createClient();const [families,setFamilies]=useState(initialFamilies),[guests,setGuests]=useState(initialGuests),[familyId,setFamilyId]=useState(initialFamilies.find(f=>f.active)?.id||""),[q,setQ]=useState(""),[msg,setMsg]=useState(""),[err,setErr]=useState(""),[busy,setBusy]=useState(false),[familyEdit,setFamilyEdit]=useState<Family|null>(null),[guestEdit,setGuestEdit]=useState<Guest|null>(null);
  const active=families.filter(f=>f.active);const visible=useMemo(()=>{const s=q.toLowerCase();return guests.filter(g=>g.active&&(!s||g.full_name.toLowerCase().includes(s)||(families.find(f=>f.id===g.family_id)?.name||"").toLowerCase().includes(s)))},[q,guests,families]);
