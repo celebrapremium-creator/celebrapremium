@@ -1,0 +1,11 @@
+"use client";
+import { useEffect,useState } from "react";
+import { useRouter } from "next/navigation";
+import { createClient } from "@/lib/supabase/client";
+type Factor={id:string};
+export default function MfaPage(){
+ const [supabase]=useState(()=>createClient());const router=useRouter();const [factor,setFactor]=useState<Factor|null>(null);const [challenge,setChallenge]=useState("");const [qr,setQr]=useState("");const [code,setCode]=useState("");const [error,setError]=useState("");const [enroll,setEnroll]=useState(false);
+ useEffect(()=>{(async()=>{const {data}=await supabase.auth.mfa.listFactors();const verified=data?.totp?.find(f=>f.status==="verified");if(verified){setFactor({id:verified.id});const {data:c}=await supabase.auth.mfa.challenge({factorId:verified.id});if(c)setChallenge(c.id)}else{const {data:e,error}=await supabase.auth.mfa.enroll({factorType:"totp",friendlyName:"CELEBRA PREMIUM"});if(error)setError("Não foi possível configurar o autenticador.");else if(e){setFactor({id:e.id});setQr(e.totp?.qr_code||"");setEnroll(true)}}})()},[supabase]);
+ async function verify(){if(!factor)return;setError("");if(enroll){const {data:c,error}=await supabase.auth.mfa.challenge({factorId:factor.id});if(error||!c){setError("Não foi possível validar.");return}const {error:v}=await supabase.auth.mfa.verify({factorId:factor.id,challengeId:c.id,code});if(v)setError("Código inválido.");else router.replace("/app")}else{const {error:v}=await supabase.auth.mfa.verify({factorId:factor.id,challengeId:challenge,code});if(v)setError("Código inválido.");else router.replace("/app")}}
+ return <main className="simple-state"><div className="state-card wide-state"><span className="eyebrow">SEGURANÇA REFORÇADA</span><h1>{enroll?"Ative seu autenticador":"Confirme o segundo fator"}</h1><p>{enroll?"Escaneie o QR Code e informe o código de 6 dígitos.":"Informe o código do aplicativo autenticador para continuar."}</p>{qr&&<img className="mfa-qr" src={"data:image/svg+xml;utf8,"+encodeURIComponent(qr)} alt="QR Code de MFA"/>}<input className="mfa-code" inputMode="numeric" maxLength={6} value={code} onChange={e=>setCode(e.target.value.replace(/[^0-9]/g,""))} placeholder="000000"/>{error&&<div className="form-error">{error}</div>}<button className="primary-button" disabled={code.length!==6} onClick={verify}>Continuar</button></div></main>;
+}
