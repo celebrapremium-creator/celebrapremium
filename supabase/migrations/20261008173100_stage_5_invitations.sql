@@ -1,6 +1,0 @@
--- CELEBRA PREMIUM — Stage 5: Convites e confirmação em três etapas
--- Applied to Supabase as:
--- stage_5_invitations
--- stage_5_invitation_listing
--- stage_5_invitation_hardening
--- The database remains the source of truth for authorization and token validation.
