@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900">
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fbf8fc"/><stop offset=".48" stop-color="#fffdfc"/><stop offset="1" stop-color="#f4fbfb"/></linearGradient>
+  <filter id="soft"><feGaussianBlur stdDeviation="8"/></filter>
+</defs>
+<rect width="1600" height="900" fill="url(#bg)"/>
+<path d="M0 0H470C390 95 250 125 0 235Z" fill="#eadcf0"/>
+<path d="M0 0H350C270 105 150 150 0 205Z" fill="#e2cde9" opacity=".7"/>
+<path d="M1600 0H1320c120 70 185 115 280 225Z" fill="#d9f1f1"/>
+<path d="M1600 0H1400c75 75 125 130 200 210Z" fill="#e9dff0" opacity=".75"/>
+<path d="M0 900V645c135 62 270 120 440 255Z" fill="#d9f2f2"/>
+<path d="M0 900V715c120 70 230 120 365 185Z" fill="#cdebed" opacity=".8"/>
+<path d="M1600 900V690c-130 75-260 140-390 210Z" fill="#f1dce8"/>
+<path d="M1600 900V745c-110 55-205 105-315 155Z" fill="#ead4e5" opacity=".8"/>
+<path d="M0 300 C220 145 400 170 590 0" fill="none" stroke="#d7c39b" stroke-width="2" opacity=".8"/>
+<path d="M1600 245 C1460 120 1390 75 1330 0" fill="none" stroke="#d7c39b" stroke-width="2" opacity=".8"/>
+<path d="M0 560 C220 720 390 770 610 900" fill="none" stroke="#d7c39b" stroke-width="2" opacity=".7"/>
+<path d="M1600 520 C1440 650 1370 730 1300 900" fill="none" stroke="#d7c39b" stroke-width="2" opacity=".7"/>
+<ellipse cx="790" cy="450" rx="390" ry="280" fill="#fff" opacity=".32" filter="url(#soft)"/>
+<image href="/brand/celebra-premium-logo.svg" x="55" y="275" width="620" height="414" preserveAspectRatio="xMidYMid meet"/>
+</svg>
