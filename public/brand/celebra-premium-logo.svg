@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 667" role="img" aria-labelledby="title desc">
+<title id="title">CELEBRA PREMIUM</title>
+<desc id="desc">Planeje. Encante. Celebre.</desc>
+<rect width="1000" height="667" fill="#fff"/>
+<g transform="translate(55 170)">
+  <path d="M20 70 C85 5 185 0 250 35 C290 57 292 93 260 112 C215 139 139 111 83 119 C57 123 37 107 20 70Z" fill="#c8b4d2"/>
+  <path d="M112 72 C55 91 9 150 3 226 C-1 280 28 326 78 336 C101 341 124 332 142 316 C94 286 78 242 82 198 C86 148 112 116 150 95Z" fill="#8fd4d4"/>
+  <path d="M151 218 C122 254 119 294 145 323 C176 358 245 365 278 335 C300 315 299 280 278 261 C247 232 206 240 179 254 C165 261 155 249 151 218Z" fill="#e9a7b2"/>
+  <rect x="256" y="-3" width="39" height="39" rx="9" transform="rotate(18 275 16)" fill="#d9d0bd"/>
+</g>
+<g fill="#60496c" font-family="Arial, Helvetica, sans-serif">
+  <text x="350" y="355" font-size="104" font-weight="700" letter-spacing="-5">Celebra</text>
+  <text x="350" y="425" font-size="58" font-weight="600">Premium</text>
+</g>
+<text x="350" y="476" font-family="Arial, Helvetica, sans-serif" font-size="31" letter-spacing="2" fill="#181318">Planeje. Encante. Celebre.</text>
+</svg>
