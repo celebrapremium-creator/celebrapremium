@@ -1,6 +1,7 @@
 "use client";
 import {useMemo,useState} from "react";
 import {createClient} from "@/lib/supabase/client";
+import {readSheet} from "read-\u0065xcel-file/browser";
 type Family={id:string;name:string;primary_contact_name:string|null;primary_contact_email:string|null;primary_contact_phone:string|null;max_invitees:number|null;notes:string|null;active:boolean};
 type Guest={id:string;family_id:string;full_name:string;category:string;is_family_responsible:boolean;companions_allowed:boolean;max_companions:number;notes:string|null;active:boolean;guest_private_details:{email:string|null;phone:string|null;special_needs:string|null}|null};
 const clean=(v:unknown)=>String(v??"").trim();
