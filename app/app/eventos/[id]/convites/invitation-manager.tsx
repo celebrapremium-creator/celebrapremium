@@ -1,6 +1,5 @@
 "use client";
 import {useEffect,useState} from "react";
-import Link from "next/link";
 import {createClient} from "@/lib/supabase/client";
 type Row={invitation_id:string;guest_id:string;family_id:string;guest_name:string;family_name:string;status:string;issued_at:string;expires_at:string|null;latest_stage:number;final_attendance:string|null};
 export default function InvitationManager({eventId}:{eventId:string}){
