@@ -15,7 +15,8 @@
     "read-excel-file": "9.3.10",
     "react": "19.3.0",
     "react-dom": "19.3.0",
-    "zod": "4.6.5"
+    "zod": "4.6.5",
+    "qrcode-base64": "1.1.1"
   },
   "devDependencies": {
     "@types/node": "26.6.4",
