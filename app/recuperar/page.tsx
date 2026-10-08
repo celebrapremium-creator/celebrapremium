@@ -1,0 +1,6 @@
+"use client";
+import { FormEvent,useState } from "react";
+import { createClient } from "@/lib/supabase/client";
+export default function Recover(){const supabase=createClient();const [email,setEmail]=useState("");const [sent,setSent]=useState(false);const [busy,setBusy]=useState(false);const [error,setError]=useState("");
+async function submit(e:FormEvent){e.preventDefault();setBusy(true);setError("");const {error}=await supabase.auth.resetPasswordForEmail(email.trim(),{redirectTo:window.location.origin+"/redefinir-senha"});if(error)setError("Não foi possível iniciar a recuperação.");else setSent(true);setBusy(false)}
+return <main className="simple-state"><div className="state-card wide-state"><span className="eyebrow">RECUPERAÇÃO DE ACESSO</span><h1>{sent?"Confira seu e-mail":"Redefinir senha"}</h1><p>{sent?"Enviamos as instruções para o endereço informado.":"Informe seu e-mail cadastrado."}</p>{!sent&&<form onSubmit={submit} className="auth-form"><label>E-mail<input type="email" required value={email} onChange={e=>setEmail(e.target.value)}/></label>{error&&<div className="form-error">{error}</div>}<button className="primary-button" disabled={busy}>{busy?"Enviando...":"Enviar instruções"}</button></form>}<a className="secondary-button" href="/login">Voltar ao login</a></div></main>}
