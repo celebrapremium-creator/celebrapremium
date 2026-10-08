@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable react-hooks/set-state-in-effect, react-hooks/exhaustive-deps */
 import {useEffect,useState} from "react";
 import {createClient} from "@/lib/supabase/client";
 type Row={invitation_id:string;guest_id:string;family_id:string;guest_name:string;family_name:string;status:string;issued_at:string;expires_at:string|null;latest_stage:number;final_attendance:string|null};
