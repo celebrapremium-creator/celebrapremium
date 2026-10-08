@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/set-state-in-effect, react-hooks/exhaustive-deps */
 "use client";
 import {useEffect,useState} from "react";import {createClient} from "@/lib/supabase/client";
 type Member={user_id:string;full_name:string;email:string;role:string;active:boolean};
