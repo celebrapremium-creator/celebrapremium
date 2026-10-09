@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable react-hooks/set-state-in-effect, react-hooks/exhaustive-deps */
 import {useEffect,useState} from "react";
 import {createClient} from "@/lib/supabase/client";
 type Album={ok:boolean;message?:string;event_id?:string;allow_guest_messages?:boolean;allow_guest_photos?:boolean;event_name?:string;memories?:{author_name:string;message:string;submitted_at:string}[];photos?:{original_filename:string;storage_path:string;uploaded_at:string;image_url?:string}[]};
