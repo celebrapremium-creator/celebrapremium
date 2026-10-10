@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { createHash } from "node:crypto";
 import { createClient } from "@supabase/supabase-js";
 
 export const runtime = "nodejs";
@@ -59,6 +60,26 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: `A mensagem deve ter no máximo ${book.max_message_chars} caracteres.` }, { status: 400 });
     }
     if (containsProfanity(message)) return NextResponse.json({ error: "A mensagem contém palavras não permitidas. Revise o texto e tente novamente." }, { status: 400 });
+
+    // Durable, atomic rate limit shared across serverless instances. Store only a hash of the client IP.
+    const clientIp = request.headers.get("x-real-ip")?.trim()
+      || request.headers.get("x-forwarded-for")?.split(",")[0]?.trim();
+    if (!clientIp) {
+      return NextResponse.json({ error: "Não foi possível validar a segurança do envio. Tente novamente." }, { status: 503 });
+    }
+    const rateLimitKey = createHash("sha256").update(`${book.id}:${clientIp}`).digest("hex");
+    const { data: allowed, error: rateLimitError } = await supabase.rpc("consume_memory_submission_rate_limit", {
+      p_book_id: book.id,
+      p_key_hash: rateLimitKey,
+      p_limit: 5,
+      p_window_seconds: 3600
+    });
+    if (rateLimitError || allowed !== true) {
+      return NextResponse.json(
+        { error: rateLimitError ? "O envio está temporariamente indisponível. Tente novamente." : "Muitos envios deste acesso. Tente novamente em uma hora." },
+        { status: rateLimitError ? 503 : 429 }
+      );
+    }
 
     const { data: guest, error: guestError } = await supabase.from("memory_guests").insert({
       book_id: book.id, first_name: firstName, last_name: lastName,
