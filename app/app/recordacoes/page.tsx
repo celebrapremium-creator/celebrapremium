@@ -63,9 +63,10 @@ export default function MemoryBooksAdminPage() {
     {book&&<div className="panel" style={{maxWidth:760,marginTop:24}}>
       <h2>{book.title}</h2><p>Limite de mensagem: {book.max_message_chars} caracteres</p>
       <p><a href={guestUrl} target="_blank" rel="noreferrer">{guestUrl}</a></p>
+      <p>Álbum virtual: <a href={"/recordacoes/"+book.slug+"/album"} target="_blank" rel="noreferrer">{typeof window!=="undefined"?new URL("/recordacoes/"+book.slug+"/album",window.location.origin).toString():"/recordacoes/"+book.slug+"/album"}</a></p>
       <img src={qrUrl} alt={"QR Code para "+book.title} width={260} height={260} style={{display:"block",margin:"16px auto",maxWidth:"100%"}}/>
       <p>Imprima este QR Code e coloque nas mesas. O QR é gerado por um serviço externo e contém somente o link público do livro.</p>
-      <div style={{display:"flex",gap:12,flexWrap:"wrap"}}><button type="button" className="secondary-button" onClick={()=>navigator.clipboard.writeText(guestUrl)}>Copiar link do livro</button><a className="primary-button" href={"/app/recordacoes/"+book.slug}>Abrir mensagens e fotos</a></div>
+      <div style={{display:"flex",gap:12,flexWrap:"wrap"}}><button type="button" className="secondary-button" onClick={()=>navigator.clipboard.writeText(guestUrl)}>Copiar link do livro</button><a className="primary-button" href={"/app/recordacoes/"+book.slug}>Abrir mensagens e fotos</a><a className="secondary-button" href={"/recordacoes/"+book.slug+"/album"} target="_blank" rel="noreferrer">Visualizar álbum virtual</a></div>
     </div>}
     {!events.length&&!error&&<div className="empty">Nenhum evento disponível para seu perfil.</div>}
   </section>;
