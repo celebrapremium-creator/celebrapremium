@@ -8,7 +8,7 @@ type AlbumEntry = {
   message: string;
   created_at: string;
   memory_guests: { first_name: string; last_name: string } | null;
-  memory_photos: { id: string; original_name: string; storage_path: string }[];
+  memory_photos: { id: string; original_name: string; storage_path: string; signed_url?: string | null }[];
 };
 
 export default async function PublicMemoryAlbumPage({ params }: { params: Promise<{ slug: string }> }) {
