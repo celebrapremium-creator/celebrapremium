@@ -8,6 +8,7 @@
 5. A galeria administrativa organiza as mensagens e as fotos por convidado.
 
 ## Configuração necessária antes de testar
+- Aplicar também `supabase/migrations/20261010010000_stage_10_rate_limit.sql` para índices de fotos e limite de envios.
 - Aplicar `supabase/migrations/20261010000000_stage_10_livro_recordacoes.sql` no projeto Supabase correto.
 - Configurar `SUPABASE_SERVICE_ROLE_KEY` **somente no ambiente servidor** da Vercel. Nunca usar prefixo `NEXT_PUBLIC_` nessa chave.
 - Configurar `NEXT_PUBLIC_SUPABASE_URL` e `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` já usados pelo projeto.
@@ -23,8 +24,8 @@
 
 ## Limitações e cuidados antes de produção
 - O filtro de palavrões é uma lista inicial e não detecta todas as variações. Deve ser revisado pelo responsável do evento.
-- A unicidade por celular não comprova que o convidado controla esse número. Para prova de posse, integrar OTP por SMS antes da liberação.
-- Não há limite de taxa/CAPTCHA nesta versão; antes de uma campanha pública, adicionar proteção contra abuso.
+- A unicidade por celular não comprova que o convidado controla esse número. Para prova de posse, integrar OTP por SMS antes da liberação pública.
+- A migration de hardening adiciona limite atômico de cinco tentativas por IP hash por livro a cada hora. Isso reduz abuso simples, mas não substitui CAPTCHA/OTP nem moderação operacional.
 - O QR Code desta tela é renderizado por um serviço externo e contém somente a URL pública do livro.
-- A galeria fornece links individuais de fotos; exportação ZIP, moderação (aprovar/rejeitar) e montagem automática de álbum virtual ainda precisam ser concluídas.
+- A galeria fornece links individuais de fotos; moderação de aprovar/rejeitar e álbum virtual aprovado estão implementados. Exportação ZIP ainda precisa ser concluída.
 - A migration cria as tabelas do livro e o bucket. Não altera nem migra dados do sistema legado.
