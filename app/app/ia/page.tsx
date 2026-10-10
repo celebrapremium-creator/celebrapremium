@@ -1,3 +1,4 @@
+import "./ai.css";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import MemoriesAIManager from "./memories-ai-manager";
@@ -33,17 +34,17 @@ export default async function MemoriesAIPage() {
     return <section className="page-content"><div className="page-heading"><div><span className="eyebrow">CELEBRA MEMORIES AI</span><h1>IA editorial</h1><p>Não há empresa com permissão de gestão disponível para esta conta.</p></div></div></section>;
   }
 
-  const [{ data: events }, { data: policies }, { data: settings }, { data: jobs }] = await Promise.all([
-    supabase.from("events").select("id,company_id,display_name,event_date").in("company_id", companyIds).order("event_date", { ascending: false }),
+  const { data: eventRows } = await supabase.from("events").select("id,company_id,display_name,event_date").in("company_id", companyIds).order("event_date", { ascending: false });
+  const eventIds = (eventRows || []).map((e) => e.id);
+  const [{ data: policies }, { data: settings }, { data: jobs }] = await Promise.all([
     supabase.from("ai_company_policies").select("company_id,enabled,monthly_request_limit,monthly_budget_usd,max_input_chars").in("company_id", companyIds),
-    supabase.from("event_album_settings").select("event_id,ai_enabled").in("event_id",
-      (await supabase.from("events").select("id").in("company_id", companyIds)).data?.map((e) => e.id) || []),
+    eventIds.length ? supabase.from("event_album_settings").select("event_id,ai_enabled").in("event_id", eventIds) : Promise.resolve({ data: [] }),
     supabase.from("ai_editorial_jobs").select("id,company_id,event_id,status,output_document,model,input_tokens,output_tokens,estimated_cost_usd,review_note,created_at").in("company_id", companyIds).order("created_at", { ascending: false }).limit(50),
   ]);
 
   return <MemoriesAIManager
     companies={companies}
-    events={(events || []).map((e) => ({ id: e.id, companyId: e.company_id, name: e.display_name, date: e.event_date }))}
+    events={(eventRows || []).map((e) => ({ id: e.id, companyId: e.company_id, name: e.display_name, date: e.event_date }))}
     policies={(policies || []).map((p) => ({ companyId: p.company_id, enabled: p.enabled, monthlyRequestLimit: p.monthly_request_limit, monthlyBudgetUsd: Number(p.monthly_budget_usd), maxInputChars: p.max_input_chars }))}
     settings={(settings || []).map((s) => ({ eventId: s.event_id, enabled: s.ai_enabled }))}
     jobs={(jobs || []).map((j) => ({ id: j.id, companyId: j.company_id, eventId: j.event_id, status: j.status, output: j.output_document, model: j.model, inputTokens: j.input_tokens, outputTokens: j.output_tokens, cost: Number(j.estimated_cost_usd), reviewNote: j.review_note, createdAt: j.created_at }))}
