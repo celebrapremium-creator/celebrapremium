@@ -110,7 +110,7 @@ begin
   if p_data_authorized is distinct from true then
     raise exception 'Confirme a autorização adequada para processar as mensagens aprovadas com um provedor externo.' using errcode = '22023';
   end if;
-  select * into v_policy from public.ai_company_policies where company_id=p_company_id and enabled=true;
+  select * into v_policy from public.ai_company_policies where company_id=p_company_id and enabled=true for update;
   if not found then raise exception 'O recurso de IA está desativado para esta empresa.' using errcode = '22023'; end if;
   if not exists(select 1 from public.events where id=p_event_id and company_id=p_company_id) then
     raise exception 'Evento não encontrado nesta empresa.' using errcode = 'P0002';
