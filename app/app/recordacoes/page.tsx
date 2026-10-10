@@ -65,7 +65,7 @@ export default function MemoryBooksAdminPage() {
       <p><a href={guestUrl} target="_blank" rel="noreferrer">{guestUrl}</a></p>
       <img src={qrUrl} alt={"QR Code para "+book.title} width={260} height={260} style={{display:"block",margin:"16px auto",maxWidth:"100%"}}/>
       <p>Imprima este QR Code e coloque nas mesas. O QR é gerado por um serviço externo e contém somente o link público do livro.</p>
-      <button type="button" className="secondary-button" onClick={()=>navigator.clipboard.writeText(guestUrl)}>Copiar link do livro</button>
+      <div style={{display:"flex",gap:12,flexWrap:"wrap"}}><button type="button" className="secondary-button" onClick={()=>navigator.clipboard.writeText(guestUrl)}>Copiar link do livro</button><a className="primary-button" href={"/app/recordacoes/"+book.slug}>Abrir mensagens e fotos</a></div>
     </div>}
     {!events.length&&!error&&<div className="empty">Nenhum evento disponível para seu perfil.</div>}
   </section>;
