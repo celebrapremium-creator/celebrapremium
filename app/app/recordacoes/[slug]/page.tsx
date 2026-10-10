@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 
 type Photo={id:string;original_name:string;size_bytes:number;signed_url:string|null};
@@ -10,8 +10,19 @@ export default function MemoryBookDetailPage(){
  const params=useParams<{slug:string}>(); const slug=params.slug;
  const [book,setBook]=useState<{title:string}|null>(null);const [entries,setEntries]=useState<Entry[]>([]);
  const [error,setError]=useState("");const [busy,setBusy]=useState(true);
- async function load(){setBusy(true);setError("");try{const res=await fetch("/api/memory-book/"+encodeURIComponent(slug)+"/entries");const data=await res.json();if(!res.ok)throw new Error(data.error||"Falha ao carregar.");setBook(data.book);setEntries(data.entries||[]);}catch(e){setError(e instanceof Error?e.message:"Falha ao carregar recordações.");}finally{setBusy(false);}}
- useEffect(()=>{void load()},[slug]);
+ const load=useCallback(async ()=>{
+   try {
+     const res=await fetch("/api/memory-book/"+encodeURIComponent(slug)+"/entries");
+     const data=await res.json();
+     if(!res.ok)throw new Error(data.error||"Falha ao carregar.");
+     setBook(data.book);setEntries(data.entries||[]);setError("");
+   } catch(e) {
+     setError(e instanceof Error?e.message:"Falha ao carregar recordações.");
+   } finally {
+     setBusy(false);
+   }
+ },[slug]);
+ useEffect(()=>{void load()},[load]);
  return <section className="page-content"><div className="page-heading"><div><span className="eyebrow">ITEM 10 · GALERIA PRIVADA</span><h1>{book?.title||"Recordações recebidas"}</h1><p>Mensagens e fotos enviadas pelos convidados, organizadas por pessoa.</p></div><button className="secondary-button" onClick={()=>void load()} disabled={busy}>Atualizar</button></div>
  {error&&<p role="alert" className="form-error">{error}</p>}{busy&&<div className="empty">Carregando recordações...</div>}
  {!busy&&!error&&!entries.length&&<div className="empty">Ainda não há recordações enviadas para este livro.</div>}
