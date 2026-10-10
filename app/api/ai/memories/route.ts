@@ -85,9 +85,6 @@ export async function POST(request: Request) {
     if (readError || !job) throw new Error("job_read_failed");
     if (!Array.isArray(job.input_snapshot) || job.input_snapshot.length === 0) throw new Error("empty_approved_input");
 
-    await supabase.from("ai_editorial_jobs").update({ status: "processing", updated_at: new Date().toISOString() })
-      .eq("id", jobId).eq("status", "queued");
-
     const systemPrompt = [
       "Você é o assistente editorial Celebra Memories AI.",
       "Sua tarefa é organizar mensagens de convidados já aprovadas por um moderador em uma proposta editorial para um álbum de celebração.",
