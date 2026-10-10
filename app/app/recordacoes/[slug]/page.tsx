@@ -22,6 +22,7 @@ export default function MemoryBookDetailPage(){
      setBusy(false);
    }
  },[slug]);
+ // eslint-disable-next-line react-hooks/set-state-in-effect -- data loading is asynchronous and guarded by the request lifecycle.
  useEffect(()=>{void load()},[load]);
  return <section className="page-content"><div className="page-heading"><div><span className="eyebrow">ITEM 10 · GALERIA PRIVADA</span><h1>{book?.title||"Recordações recebidas"}</h1><p>Mensagens e fotos enviadas pelos convidados, organizadas por pessoa.</p></div><button className="secondary-button" onClick={()=>void load()} disabled={busy}>Atualizar</button></div>
  {error&&<p role="alert" className="form-error">{error}</p>}{busy&&<div className="empty">Carregando recordações...</div>}
