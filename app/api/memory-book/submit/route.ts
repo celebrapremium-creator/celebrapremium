@@ -7,19 +7,24 @@ export const dynamic = "force-dynamic";
 
 const profanity = [
   "caralho", "porra", "puta", "puto", "merda", "buceta", "foder", "fodase",
-  "fdp", "cuzao", "arrombado", "desgraca", "vadia", "piranha"
+  "fdp", "cuzao", "arrombado", "desgraca", "vadia", "piranha", "putaria"
 ];
 
 function normalizeText(value: string) {
-  return value.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+  return value.normalize("NFD").replace(/[\\u0300-\\u036f]/g, "")
     .toLowerCase().replace(/[@4]/g, "a").replace(/[3]/g, "e")
     .replace(/[1!|]/g, "i").replace(/[0]/g, "o").replace(/[$5]/g, "s")
-    .replace(/[7]/g, "t").replace(/[^a-z]/g, "");
+    .replace(/[7]/g, "t");
 }
 
 function containsProfanity(value: string) {
   const normalized = normalizeText(value);
-  return profanity.some(word => normalized.includes(word));
+  return profanity.some(word => {
+    // Reject whole offensive terms, including punctuation inserted between letters,
+    // without blocking innocent words that merely contain the same letters.
+    const pattern = word.split("").join("[^a-z]*");
+    return new RegExp("(^|[^a-z])" + pattern + "($|[^a-z])").test(normalized);
+  });
 }
 
 function phoneDigits(value: string) {
