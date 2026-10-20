@@ -11,7 +11,7 @@ const profanity = [
 ];
 
 function normalizeText(value: string) {
-  return value.normalize("NFD").replace(/[\\u0300-\\u036f]/g, "")
+  return value.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
     .toLowerCase().replace(/[@4]/g, "a").replace(/[3]/g, "e")
     .replace(/[1!|]/g, "i").replace(/[0]/g, "o").replace(/[$5]/g, "s")
     .replace(/[7]/g, "t");
@@ -61,10 +61,7 @@ export async function POST(request: Request) {
     const { data: book, error: bookError } = await supabase.from("memory_books")
       .select("id,title,max_message_chars,active").eq("slug", slug).eq("active", true).maybeSingle();
     if (bookError || !book) return NextResponse.json({ error: "Este livro não está disponível." }, { status: 404 });
-    if (message.length > book.max_message_chars) {
-      return NextResponse.json({ error: `A mensagem deve ter no máximo ${book.max_message_chars} caracteres.` }, { status: 400 });
-    }
-    if (containsProfanity(message)) return NextResponse.json({ error: "A mensagem contém palavras não permitidas. Revise o texto e tente novamente." }, { status: 400 });
+        if (containsProfanity(message)) return NextResponse.json({ error: "A mensagem contém palavras não permitidas. Revise o texto e tente novamente." }, { status: 400 });
 
     // Durable, atomic rate limit shared across serverless instances. Store only a hash of the client IP.
     const clientIp = request.headers.get("x-real-ip")?.trim()
