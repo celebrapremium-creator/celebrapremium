@@ -30,6 +30,11 @@ export default function LoginPage() {
   }
 
   return <main className="auth-shell">
+    <section className="auth-visual" aria-label="CELEBRA PREMIUM">
+      <div style={{display:"flex",alignItems:"center",justifyContent:"center",width:"100%",minHeight:"70vh"}}>
+        <img className="brand-logo" src="/brand/celebra-premium-logo.svg" alt="CELEBRA PREMIUM — Planeje. Encante. Celebre." style={{width:"min(560px, 92%)",maxWidth:"560px",height:"auto",objectFit:"contain"}} />
+      </div>
+    </section>
     <section className="auth-card"><div className="auth-card-inner"><span className="eyebrow">ACESSO SEGURO</span><h2>Bem-vindo de volta</h2><p className="muted">Entre com seu e-mail e senha para acessar o ambiente autorizado.</p><form onSubmit={submit} className="auth-form"><label>E-mail<input type="email" required autoComplete="email" value={email} onChange={e=>setEmail(e.target.value)}/></label><label>Senha<div className="password-row"><input type={show?"text":"password"} required autoComplete="current-password" value={password} onChange={e=>setPassword(e.target.value)}/><button type="button" className="text-button" onClick={()=>setShow(!show)}>{show?"Ocultar":"Exibir"}</button></div></label>{error&&<div className="form-error" role="alert">{error}</div>}<button className="primary-button" disabled={busy}>{busy?"Entrando...":"Entrar"}</button></form><div className="auth-links"><a href="/recuperar">Esqueci minha senha</a><a className="secondary-button" href="/solicitar-acesso">Solicitar primeiro acesso</a></div></div></section>
   </main>;
 }
